@@ -20,6 +20,21 @@
 			 If you have a new CSS file you'd like to add with custom styling, you should link to it here using:
 			  
 		-->
+
+		<style>
+			body { font-family: sans-serif; padding: 20px; }
+			.playlist-item {
+				margin: 10px 0;
+				cursor: pointer;
+				padding: 5px;
+				border-radius: 5px;
+			}
+			.playlist-item:hover {
+				background-color: #f0f0f0;
+			}
+			#audio-player { width: 100%; margin-top: 20px; }
+		</style>
+		
 		
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!-- 	In the case that the user's browser does not support JavaScript (unlikely, but possible), the page
@@ -415,8 +430,32 @@
 				see how this element is styled. Look for comments pointing 
 				to where you can set a new background image.
 			-->
-			<div id="custom-audio-player">
-				<audio id="myAudio" src="audio/.mp3"></audio>
+			<div id="playlist">
+				<div class="Tunnels.mp3" data-src="">Tunnels</div>
+				<div class="Sunflower.mp3" data-src="">Sunflower</div>
+				<div class="Die4you (Extended Version).mp3" data-src="">Die4you</div>
+			</div>
+
+			<audio controls id="audio-player"></audio>
+
+			<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				const audioPlayer = document.getElementById('audio-player');
+				const playlistItems = document.querySelectorAll('.playlist-item');
+
+				playlistItems.forEach(item => {
+					item.addEventListerner('click', () => {
+						const newSrc = item.getAttribute('data-src');
+						audioPlayer.src = newSrc;
+						audioPlayer.play();
+					});
+				});
+			});
+			</script>
+
+
+					
+				<!-- <audio id="myAudio" src="audio/.mp3"></audio>
         		<button id="playPauseBtn">Play</button>
         		<div id="progressBarContainer">
             		<div id="progressBar"></div>
@@ -438,6 +477,7 @@
 
 	</body>
 </html>
+
 
 
 
