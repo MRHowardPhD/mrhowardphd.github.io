@@ -1647,3 +1647,17 @@ button {
 	body.is-preload #footer {
 		opacity: 0;
 	}
+
+	#custom-audio-player {
+        /* Add styling for your player container */
+    }
+    #playPauseBtn {
+        /* Style your play/pause button */
+    }
+    #progressBarContainer {
+        /* Style your progress bar container */
+    }
+    #progressBar {
+        /* Style the progress bar itself */
+    }
+    /* ... and so on for other elements */
