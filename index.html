@@ -43,7 +43,212 @@
 			available. 
 		-->
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-		
+		<style>
+  			/* Sticky player bar */
+  			#music-player {
+    			position: fixed;
+    			bottom: 0;
+    			left: 0;
+    			right: 0;
+    			background: #0f0f0f;
+    			border-top: 1px solid #2a2a2a;
+    			padding: 10px 24px;
+    			display: flex;
+    			align-items: center;
+    			gap: 18px;
+    			z-index: 9999;
+    			font-family: Georgia, 'Times New Roman', serif;
+    			box-shadow: 0 -4px 24px rgba(0,0,0,0.4);
+  				}
+			/* Ensure page content isn't hidden behind the player */
+  			body {
+    			padding-bottom: 72px;
+  				}
+
+  			/* Track info */
+  			.mp-track-info {
+    			flex: 1;
+    			min-width: 0;
+  				}
+  			.mp-track-title {
+    			color: #e8e0d0;
+    			font-size: 14px;
+    			font-weight: 500;
+    			white-space: nowrap;
+    			overflow: hidden;
+    			text-overflow: ellipsis;
+    			margin: 0 0 2px;
+  					}
+  			.mp-track-artist {
+    			color: #888;
+    			font-size: 12px;
+    			margin: 0;
+  				}
+
+  			/* Progress bar */
+  			.mp-progress-block {
+    			flex: 2;
+    			display: flex;
+    			flex-direction: column;
+    			gap: 4px;
+    			min-width: 120px;
+  				}
+  			.mp-progress-bar {
+    			position: relative;
+    			height: 4px;
+    			background: #2a2a2a;
+    			border-radius: 2px;
+    			cursor: pointer;
+  					}
+  			.mp-progress-bar:hover { background: #333; }
+  			.mp-progress-fill {
+    			height: 100%;
+    			background: #c8b99a;
+    			border-radius: 2px;
+			    width: 0%;
+    			pointer-events: none;
+    			transition: width 0.1s linear;
+					  }
+  			.mp-time-row {
+    			display: flex;
+    			justify-content: space-between;
+  				}
+  			.mp-time-label {
+    			font-size: 11px;
+    			color: #666;
+    			font-family: monospace;
+  				}
+
+  			/* Control buttons */
+  			.mp-controls {
+    			display: flex;
+    			align-items: center;
+    			gap: 8px;
+  				}
+  			.mp-ctrl-btn {
+    			background: none;
+    			border: none;
+    			cursor: pointer;
+    			padding: 6px;
+    			color: #aaa;
+    			font-size: 20px;
+   				display: flex;
+    			align-items: center;
+    			transition: color 0.15s;
+   	 			line-height: 1;
+  					}
+  			.mp-ctrl-btn:hover { color: #e8e0d0; }
+  			.mp-play-btn {
+			    background: #c8b99a;
+			    border: none;
+			    border-radius: 50%;
+			    width: 40px;
+			    height: 40px;
+			    display: flex;
+			    align-items: center;
+			    justify-content: center;
+			    cursor: pointer;
+			    transition: background 0.15s;
+			    flex-shrink: 0;
+			  }
+		  	.mp-play-btn:hover { background: #e0ccaa; }
+		  	.mp-play-btn svg {
+			    width: 18px;
+			    height: 18px;
+			    fill: #0f0f0f;
+			  }
+
+		  	/* Volume */
+		  	.mp-volume {
+			    display: flex;
+			    align-items: center;
+			    gap: 6px;
+			  }
+  			.mp-volume svg {
+			    width: 16px;
+			    height: 16px;
+			    fill: #888;
+			    flex-shrink: 0;
+			  	}
+  			.mp-vol-slider {
+			    width: 70px;
+			    accent-color: #c8b99a;
+			    cursor: pointer;
+			  }
+
+  			/* Playlist toggle button */
+  			.mp-list-btn {
+			    background: none;
+			    border: none;
+			    cursor: pointer;
+			    color: #888;
+			    font-size: 20px;
+			    padding: 6px;
+			    display: flex;
+			    align-items: center;
+			    transition: color 0.15s;
+			    line-height: 1;
+			  }
+  			.mp-list-btn:hover { color: #e8e0d0; }
+
+  			/* Playlist panel */
+  			#mp-playlist {
+			    position: fixed;
+			    bottom: 72px; /* sits just above the player bar */
+			    right: 24px;
+			    width: 280px;
+			    background: #141414;
+			    border: 1px solid #2a2a2a;
+			    border-radius: 10px;
+			    overflow: hidden;
+			    display: none;
+			    z-index: 9998;
+			    box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
+			    font-family: Georgia, 'Times New Roman', serif;
+			  }
+  			#mp-playlist.open { display: block; }
+
+  			.mp-playlist-item {
+			    display: flex;
+			    align-items: center;
+			    gap: 10px;
+			    padding: 10px 16px;
+			    cursor: pointer;
+			    border-bottom: 1px solid #1e1e1e;
+			    transition: background 0.1s;
+			  }
+		  	.mp-playlist-item:last-child { border-bottom: none; }
+		  	.mp-playlist-item:hover { background: #1e1e1e; }
+		  	.mp-playlist-item.active { background: #1a1a1a; }
+		  	.mp-item-num {
+			    color: #555;
+			    font-size: 12px;
+			    width: 20px;
+			    text-align: right;
+			    flex-shrink: 0;
+			  }
+			.mp-item-num.playing { color: #c8b99a; }
+			.mp-item-name {
+			    color: #ccc;
+			    font-size: 13px;
+			    flex: 1;
+			    white-space: nowrap;
+			    overflow: hidden;
+			    text-overflow: ellipsis;
+			  }
+  			.mp-item-dur {
+			    color: #555;
+			    font-size: 12px;
+			    font-family: monospace;
+			    flex-shrink: 0;
+			  }
+
+  		/* Mobile: hide volume on small screens */
+  			@media (max-width: 600px) {
+    			.mp-volume { display: none; }
+    			.mp-progress-block { min-width: 80px; }
+  				}
+		</style>
 	</head>
 	<!-- The body is the location where your site's content will go -->
 	<body class="is-preload">
@@ -478,6 +683,221 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 
+			<div id="music-player">
+
+			  <!-- Track info -->
+			  <div class="mp-track-info">
+			    <p class="mp-track-title" id="mp-title">Track Title</p>
+			    <p class="mp-track-artist" id="mp-artist">Artist</p>
+			  </div>
+
+  			  <!-- Progress -->
+			  <div class="mp-progress-block">
+			    <div class="mp-progress-bar" id="mp-prog-bar">
+			      <div class="mp-progress-fill" id="mp-prog-fill"></div>
+			    </div>
+			  <div class="mp-time-row">
+			      <span class="mp-time-label" id="mp-cur">0:00</span>
+			      <span class="mp-time-label" id="mp-dur">0:00</span>
+			    </div>
+			  </div>
+
+  			<!-- Controls -->
+  			<div class="mp-controls">
+    		<!-- Previous -->
+    		<button class="mp-ctrl-btn" id="mp-prev" aria-label="Previous track">
+      			<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+    		</button>
+
+    		<!-- Play / Pause -->
+		    <button class="mp-play-btn" id="mp-play" aria-label="Play or pause">
+		      <svg id="mp-play-icon" viewBox="0 0 24 24">
+		        <!-- Play icon -->
+		        <path d="M8 5v14l11-7z"/>
+		      </svg>
+		    </button>
+
+		    <!-- Next -->
+		    <button class="mp-ctrl-btn" id="mp-next" aria-label="Next track">
+		      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M6 18l8.5-6L6 6v12zm2-8.14 5.35 3.64L8 17.14V9.86zM16 6h2v12h-2z"/></svg>
+		    </button>
+		  </div>
+
+		  <!-- Volume -->
+		  <div class="mp-volume">
+		    <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+		    <input type="range" class="mp-vol-slider" id="mp-vol" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+		  </div>
+
+		  <!-- Playlist toggle -->
+		  <button class="mp-list-btn" id="mp-list-btn" aria-label="Toggle playlist" title="Playlist">
+		    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+		      <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+		    </svg>
+		  </button>
+		</div>
+
+		<!-- Playlist Panel -->
+		<div id="mp-playlist"></div>
+
+		<!-- Hidden audio element -->
+		<audio id="mp-audio"></audio>
+
+		<script>
+		(function () {
+
+		  // ══════════════════════════════════════════════════
+		  // YOUR TRACKS — Edit this list!
+		  //
+		  // title:   Song name shown in the player
+		  // artist:  Artist name shown in the player
+		  // src:     Path to your .mp3 file
+		  //          Example: "audio/my-song.mp3"  (if stored in /audio/ folder)
+		  //          or a full URL to an externally hosted file
+		  // ══════════════════════════════════════════════════
+		  const tracks = [
+		    { title: "Die4you (Extended)",   artist: "808toofly", src: "audio/Die4you_Extended.mp3"   },
+		    { title: "I Can't Help It Electric Relaxation (Mashup)",   artist: "Michael Jackson, A Tribe Called Quest", src: "audio/Electric_Relaxation_I_Can't_Help_It_(Mashup).mp3"   },
+		    { title: "Olson (Wrm Remix)", artist: "Board of Canada", src: "audio/Frozen_Indigo.mp3" },
+			{ title: "Peace and Love", artist: "Tall Black Guy", src: "audio/Peace_and_Love.mp3" },
+			{ title: "Set Me Free", artist: "remdolla", src: "audio/Set_Me_Free.mp3" },
+			{ title: "Sunflower", artist: "DKJ Beats", src: "audio/Sunflower.mp3" },
+			{ title: "Try Again", artist: "remdolla", src: "audio/Try_Again.mp3" },
+			{ title: "Tunnels", artist: "Lalah Hathaway", src: "audio/Tunnels.mp3" },
+			{ title: "You Know Whats Golden (Mashup)", artist: "Jill Scott, Donnel Jones", src: "audio/You_Know_Whats_Golden.mp3" },
+		    // Add more tracks here...
+		  ];
+		  // ══════════════════════════════════════════════════
+		
+		  const audio     = document.getElementById('mp-audio');
+		  const title     = document.getElementById('mp-title');
+		  const artist    = document.getElementById('mp-artist');
+		  const curEl     = document.getElementById('mp-cur');
+		  const durEl     = document.getElementById('mp-dur');
+		  const progBar   = document.getElementById('mp-prog-bar');
+		  const progFill  = document.getElementById('mp-prog-fill');
+		  const playBtn   = document.getElementById('mp-play');
+		  const playIcon  = document.getElementById('mp-play-icon');
+		  const prevBtn   = document.getElementById('mp-prev');
+		  const nextBtn   = document.getElementById('mp-next');
+		  const volSlider = document.getElementById('mp-vol');
+		  const listBtn   = document.getElementById('mp-list-btn');
+		  const playlist  = document.getElementById('mp-playlist');
+		
+		  // SVG path data for play and pause icons
+		  const PLAY_PATH  = 'M8 5v14l11-7z';
+		  const PAUSE_PATH = 'M6 19h4V5H6v14zm8-14v14h4V5h-4z';
+		
+		  let current = 0;
+		  let isPlaying = false;
+
+		  // Build playlist panel
+		  function buildPlaylist() {
+		    playlist.innerHTML = '';
+		    tracks.forEach((t, i) => {
+		      const div = document.createElement('div');
+		      div.className = 'mp-playlist-item' + (i === current ? ' active' : '');
+		      div.dataset.index = i;
+		      div.innerHTML = `
+		        <span class="mp-item-num ${i === current ? 'playing' : ''}">${i === current ? '&#9654;' : i + 1}</span>
+		        <span class="mp-item-name">${t.title}</span>
+		      `;
+		      div.addEventListener('click', () => { loadTrack(i); play(); });
+		      playlist.appendChild(div);
+		    });
+		  }
+		
+		  function fmtTime(s) {
+		    if (isNaN(s) || s === Infinity) return '0:00';
+		    const m = Math.floor(s / 60);
+		    const sec = Math.floor(s % 60);
+		    return m + ':' + (sec < 10 ? '0' : '') + sec;
+		  }
+		
+		  function loadTrack(idx) {
+		    current = idx;
+		    const t = tracks[idx];
+		    audio.src = t.src;
+		    audio.load();
+		    title.textContent  = t.title;
+		    artist.textContent = t.artist;
+		    progFill.style.width = '0%';
+		    curEl.textContent = '0:00';
+		    durEl.textContent = '0:00';
+		    buildPlaylist();
+		  }
+		
+		  function play() {
+		    audio.play();
+		    isPlaying = true;
+		    playIcon.querySelector('path') && (playIcon.querySelector('path').setAttribute('d', PAUSE_PATH));
+		    playIcon.innerHTML = `<path d="${PAUSE_PATH}"/>`;
+		  }
+		
+		  function pause() {
+		    audio.pause();
+		    isPlaying = false;
+		    playIcon.innerHTML = `<path d="${PLAY_PATH}"/>`;
+		  }
+		
+		  function togglePlay() {
+		    if (isPlaying) { pause(); } else { play(); }
+		  }
+		
+		  function nextTrack() {
+		    loadTrack((current + 1) % tracks.length);
+		    if (isPlaying) play();
+		  }
+		
+		  function prevTrack() {
+		    if (audio.currentTime > 3) {
+		      audio.currentTime = 0;
+		    } else {
+		      loadTrack((current - 1 + tracks.length) % tracks.length);
+		      if (isPlaying) play();
+		    }
+		  }
+		
+		  // Events
+		  playBtn.addEventListener('click', togglePlay);
+		  nextBtn.addEventListener('click', nextTrack);
+		  prevBtn.addEventListener('click', prevTrack);
+		
+		  audio.addEventListener('timeupdate', () => {
+		    const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+		    progFill.style.width = pct + '%';
+		    curEl.textContent = fmtTime(audio.currentTime);
+		    durEl.textContent = fmtTime(audio.duration);
+		  });
+		
+		  audio.addEventListener('ended', nextTrack);
+		
+		  progBar.addEventListener('click', (e) => {
+		    const rect = progBar.getBoundingClientRect();
+		    const ratio = (e.clientX - rect.left) / rect.width;
+		    audio.currentTime = ratio * audio.duration;
+		  });
+		
+		  volSlider.addEventListener('input', () => {
+		    audio.volume = volSlider.value;
+		  });
+		
+		  listBtn.addEventListener('click', () => {
+		    playlist.classList.toggle('open');
+		  });
+		
+		  // Close playlist if clicking outside
+		  document.addEventListener('click', (e) => {
+		    if (!playlist.contains(e.target) && e.target !== listBtn) {
+		      playlist.classList.remove('open');
+		    }
+		  });
+		
+		  // Init
+		  audio.volume = 0.8;
+		  loadTrack(0);
+		})();
+		</script>
 	</body>
 </html>
 
