@@ -628,14 +628,28 @@
 
 					<!-- ═══════════════════════════════════════════════════ -->
 				<!-- Paste this AFTER </footer> and BEFORE </div> wrapper -->
-				<!-- ═══════════════════════════════════════════════════ -->
+				<!-- ═══════════════════════════════════════════════════ 
+				{ title: "Die4you (Extended)",                          artist: "808toofly",                              src: "audio/Die4you_Extended.mp3"                    },
+				    { title: "I Cant Help It Electric Relaxation (Mashup)", artist: "Michael Jackson, A Tribe Called Quest",  src: "audio/Electric_Relaxation_I_Cant_Help_It_Mashup.mp3" },
+				    { title: "Olson (Wrm Remix)",                           artist: "Board of Canada",                        src: "audio/Frozen_Indigo.mp3"                       },
+				    { title: "Peace and Love",                              artist: "Tall Black Guy",                         src: "audio/Peace_and_Love.mp3"                      },
+				    { title: "Set Me Free",                                 artist: "remdolla",                               src: "audio/Set_Me_Free.mp3"                         },
+				    { title: "Sunflower",                                   artist: "DKJ Beats",                              src: "audio/Sunflower.mp3"                           },
+				    { title: "Try Again",                                   artist: "remdolla",                               src: "audio/Try_Again.mp3"                           },
+				    { title: "Tunnels",                                     artist: "Lalah Hathaway",                         src: "audio/Tunnels.mp3"                             },
+				    { title: "You Know Whats Golden (Mashup)",              artist: "Jill Scott, Donnel Jones",               src: "audio/You_Know_Whats_Golden.mp3"               }
+				  -->
 
 				<!-- Player Bar -->
 				<div id="music-player">
+
+				  <!-- Track info -->
 				  <div class="mp-track-info">
 				    <p class="mp-track-title" id="mp-title">Track Title</p>
 				    <p class="mp-track-artist" id="mp-artist">Artist</p>
 				  </div>
+				
+				  <!-- Progress -->
 				  <div class="mp-progress-block">
 				    <div class="mp-progress-bar" id="mp-prog-bar">
 				      <div class="mp-progress-fill" id="mp-prog-fill"></div>
@@ -645,23 +659,35 @@
 				      <span class="mp-time-label" id="mp-dur">0:00</span>
 				    </div>
 				  </div>
+				
+				  <!-- Controls -->
 				  <div class="mp-controls">
+				    <!-- Previous -->
 				    <button class="mp-ctrl-btn" id="mp-prev" aria-label="Previous track">
 				      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
 				    </button>
+				
+				    <!-- Play / Pause -->
 				    <button class="mp-play-btn" id="mp-play" aria-label="Play or pause">
-				      <svg id="mp-play-icon" viewBox="0 0 24 24" fill="#0f0f0f" width="18" height="18">
+				      <svg id="mp-play-icon" viewBox="0 0 24 24">
+				        <!-- Play icon -->
 				        <path d="M8 5v14l11-7z"/>
 				      </svg>
 				    </button>
+				
+				    <!-- Next -->
 				    <button class="mp-ctrl-btn" id="mp-next" aria-label="Next track">
 				      <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M6 18l8.5-6L6 6v12zm2-8.14 5.35 3.64L8 17.14V9.86zM16 6h2v12h-2z"/></svg>
 				    </button>
 				  </div>
+				
+				  <!-- Volume -->
 				  <div class="mp-volume">
-				    <svg viewBox="0 0 24 24" fill="#888" width="16" height="16"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+				    <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
 				    <input type="range" class="mp-vol-slider" id="mp-vol" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
 				  </div>
+				
+				  <!-- Playlist toggle -->
 				  <button class="mp-list-btn" id="mp-list-btn" aria-label="Toggle playlist" title="Playlist">
 				    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
 				      <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
@@ -677,21 +703,27 @@
 
 				<script>
 				(function () {
+				
+				  // ══════════════════════════════════════════════════
+				  // YOUR TRACKS — Edit this list!
+				  //
+				  // title:   Song name shown in the player
+				  // artist:  Artist name shown in the player
+				  // src:     Path to your .mp3 file
+				  //          Example: "audio/my-song.mp3"  (if stored in /audio/ folder)
+				  //          or a full URL to an externally hosted file
+				  // ══════════════════════════════════════════════════
 				  const tracks = [
-				    { title: "Die4you (Extended)",                        artist: "808toofly",                              src: "audio/Die4you_Extended.mp3"                    },
-				    { title: "I Cant Help It Electric Relaxation Mashup", artist: "Michael Jackson, A Tribe Called Quest",  src: "audio/Electric_Relaxation_I_Cant_Help_It_Mashup.mp3" },
-				    { title: "Olson (Wrm Remix)",                         artist: "Board of Canada",                        src: "audio/Frozen_Indigo.mp3"                       },
-				    { title: "Peace and Love",                            artist: "Tall Black Guy",                         src: "audio/Peace_and_Love.mp3"                      },
-				    { title: "Set Me Free",                               artist: "remdolla",                               src: "audio/Set_Me_Free.mp3"                         },
-				    { title: "Sunflower",                                 artist: "DKJ Beats",                              src: "audio/Sunflower.mp3"                           },
-				    { title: "Try Again",                                 artist: "remdolla",                               src: "audio/Try_Again.mp3"                           },
-				    { title: "Tunnels",                                   artist: "Lalah Hathaway",                         src: "audio/Tunnels.mp3"                             },
-				    { title: "You Know Whats Golden Mashup",              artist: "Jill Scott, Donnel Jones",               src: "audio/You_Know_Whats_Golden.mp3"               }
+				    { title: "Song One",   artist: "Artist Name", src: "audio/song-one.mp3"   },
+				    { title: "Song Two",   artist: "Artist Name", src: "audio/song-two.mp3"   },
+				    { title: "Song Three", artist: "Artist Name", src: "audio/song-three.mp3" },
+				    // Add more tracks here...
 				  ];
-
+				  // ══════════════════════════════════════════════════
+				
 				  const audio     = document.getElementById('mp-audio');
-				  const titleEl   = document.getElementById('mp-title');
-				  const artistEl  = document.getElementById('mp-artist');
+				  const title     = document.getElementById('mp-title');
+				  const artist    = document.getElementById('mp-artist');
 				  const curEl     = document.getElementById('mp-cur');
 				  const durEl     = document.getElementById('mp-dur');
 				  const progBar   = document.getElementById('mp-prog-bar');
@@ -703,114 +735,121 @@
 				  const volSlider = document.getElementById('mp-vol');
 				  const listBtn   = document.getElementById('mp-list-btn');
 				  const playlist  = document.getElementById('mp-playlist');
-
+				
+				  // SVG path data for play and pause icons
 				  const PLAY_PATH  = 'M8 5v14l11-7z';
 				  const PAUSE_PATH = 'M6 19h4V5H6v14zm8-14v14h4V5h-4z';
-
+				
 				  let current = 0;
 				  let isPlaying = false;
-
+				
+				  // Build playlist panel
 				  function buildPlaylist() {
 				    playlist.innerHTML = '';
-				    tracks.forEach(function(t, i) {
-				      var div = document.createElement('div');
+				    tracks.forEach((t, i) => {
+				      const div = document.createElement('div');
 				      div.className = 'mp-playlist-item' + (i === current ? ' active' : '');
-				      div.innerHTML =
-				        '<span class="mp-item-num ' + (i === current ? 'playing' : '') + '">' +
-				        (i === current ? '&#9654;' : i + 1) + '</span>' +
-				        '<span class="mp-item-name">' + t.title + '</span>';
-				      div.addEventListener('click', function() { loadTrack(i); play(); });
+				      div.dataset.index = i;
+				      div.innerHTML = `
+				        <span class="mp-item-num ${i === current ? 'playing' : ''}">${i === current ? '&#9654;' : i + 1}</span>
+				        <span class="mp-item-name">${t.title}</span>
+				      `;
+				      div.addEventListener('click', () => { loadTrack(i); play(); });
 				      playlist.appendChild(div);
 				    });
 				  }
-
+				
 				  function fmtTime(s) {
 				    if (isNaN(s) || s === Infinity) return '0:00';
-				    var m = Math.floor(s / 60);
-				    var sec = Math.floor(s % 60);
+				    const m = Math.floor(s / 60);
+				    const sec = Math.floor(s % 60);
 				    return m + ':' + (sec < 10 ? '0' : '') + sec;
 				  }
-
+				
 				  function loadTrack(idx) {
 				    current = idx;
-				    audio.src = tracks[idx].src;
+				    const t = tracks[idx];
+				    audio.src = t.src;
 				    audio.load();
-				    titleEl.textContent  = tracks[idx].title;
-				    artistEl.textContent = tracks[idx].artist;
+				    title.textContent  = t.title;
+				    artist.textContent = t.artist;
 				    progFill.style.width = '0%';
 				    curEl.textContent = '0:00';
 				    durEl.textContent = '0:00';
 				    buildPlaylist();
 				  }
-
+				
 				  function play() {
 				    audio.play();
 				    isPlaying = true;
-				    playIcon.innerHTML = '<path d="' + PAUSE_PATH + '"/>';
+				    playIcon.querySelector('path') && (playIcon.querySelector('path').setAttribute('d', PAUSE_PATH));
+				    playIcon.innerHTML = `<path d="${PAUSE_PATH}"/>`;
 				  }
-
+				
 				  function pause() {
 				    audio.pause();
 				    isPlaying = false;
-				    playIcon.innerHTML = '<path d="' + PLAY_PATH + '"/>';
+				    playIcon.innerHTML = `<path d="${PLAY_PATH}"/>`;
 				  }
-
-				  playBtn.addEventListener('click', function() {
+				
+				  function togglePlay() {
 				    if (isPlaying) { pause(); } else { play(); }
-				  });
-
-				  nextBtn.addEventListener('click', function() {
+				  }
+				
+				  function nextTrack() {
 				    loadTrack((current + 1) % tracks.length);
 				    if (isPlaying) play();
-				  });
-
-				  prevBtn.addEventListener('click', function() {
+				  }
+				
+				  function prevTrack() {
 				    if (audio.currentTime > 3) {
 				      audio.currentTime = 0;
 				    } else {
 				      loadTrack((current - 1 + tracks.length) % tracks.length);
 				      if (isPlaying) play();
 				    }
-				  });
-
-				  audio.addEventListener('timeupdate', function() {
-				    var pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+				  }
+				
+				  // Events
+				  playBtn.addEventListener('click', togglePlay);
+				  nextBtn.addEventListener('click', nextTrack);
+				  prevBtn.addEventListener('click', prevTrack);
+				
+				  audio.addEventListener('timeupdate', () => {
+				    const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
 				    progFill.style.width = pct + '%';
 				    curEl.textContent = fmtTime(audio.currentTime);
 				    durEl.textContent = fmtTime(audio.duration);
 				  });
-
-				  audio.addEventListener('ended', function() {
-				    loadTrack((current + 1) % tracks.length);
-				    play();
+				
+				  audio.addEventListener('ended', nextTrack);
+				
+				  progBar.addEventListener('click', (e) => {
+				    const rect = progBar.getBoundingClientRect();
+				    const ratio = (e.clientX - rect.left) / rect.width;
+				    audio.currentTime = ratio * audio.duration;
 				  });
-
-				  progBar.addEventListener('click', function(e) {
-				    var rect = progBar.getBoundingClientRect();
-				    audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
-				  });
-
-				  volSlider.addEventListener('input', function() {
+				
+				  volSlider.addEventListener('input', () => {
 				    audio.volume = volSlider.value;
 				  });
-
-				  listBtn.addEventListener('click', function(e) {
-				    e.stopPropagation();
+				
+				  listBtn.addEventListener('click', () => {
 				    playlist.classList.toggle('open');
 				  });
-
-				  document.addEventListener('click', function(e) {
+				
+				  // Close playlist if clicking outside
+				  document.addEventListener('click', (e) => {
 				    if (!playlist.contains(e.target) && e.target !== listBtn) {
 				      playlist.classList.remove('open');
 				    }
 				  });
-
+				
+				  // Init
 				  audio.volume = 0.8;
 				  loadTrack(0);
 				})();
 				</script>
-
-			</div>
 			<!-- ═══ end of #wrapper ═══ -->
 
 			<div id="bg"></div>
