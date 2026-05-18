@@ -678,170 +678,170 @@
 					      <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
 					    </svg>
 					  </button>
-				</div>
+					</div>
 		
 				<!-- Playlist Panel -->
-				<div id="mp-playlist"></div>
-		
-				<!-- Hidden audio element -->
-				<audio id="mp-audio"></audio>
-		
-				<script>
-				(function () {
-		
-				  // ══════════════════════════════════════════════════
-				  // YOUR TRACKS — Edit this list!
-				  //
-				  // title:   Song name shown in the player
-				  // artist:  Artist name shown in the player
-				  // src:     Path to your .mp3 file
-				  //          Example: "audio/my-song.mp3"  (if stored in /audio/ folder)
-				  //          or a full URL to an externally hosted file
-				  // ══════════════════════════════════════════════════
-				  const tracks = [
-				    { title: "Die4you (Extended)",   artist: "808toofly", src: "audio/Die4you_Extended.mp3"   },
-				    { title: "I Cant Help It Electric Relaxation (Mashup)",   artist: "Michael Jackson, A Tribe Called Quest", src: "audio/Electric_Relaxation_I_Cant_Help_It_Mashup.mp3"   },
-				    { title: "Olson (Wrm Remix)", artist: "Board of Canada", src: "audio/Frozen_Indigo.mp3" },
-					{ title: "Peace and Love", artist: "Tall Black Guy", src: "audio/Peace_and_Love.mp3" },
-					{ title: "Set Me Free", artist: "remdolla", src: "audio/Set_Me_Free.mp3" },
-					{ title: "Sunflower", artist: "DKJ Beats", src: "audio/Sunflower.mp3" },
-					{ title: "Try Again", artist: "remdolla", src: "audio/Try_Again.mp3" },
-					{ title: "Tunnels", artist: "Lalah Hathaway", src: "audio/Tunnels.mp3" },
-					{ title: "You Know Whats Golden (Mashup)", artist: "Jill Scott, Donnel Jones", src: "audio/You_Know_Whats_Golden.mp3" },
-				    // Add more tracks here...
-				  ];
-				  // ══════════════════════════════════════════════════
-				
-				  const audio     = document.getElementById('mp-audio');
-				  const title     = document.getElementById('mp-title');
-				  const artist    = document.getElementById('mp-artist');
-				  const curEl     = document.getElementById('mp-cur');
-				  const durEl     = document.getElementById('mp-dur');
-				  const progBar   = document.getElementById('mp-prog-bar');
-				  const progFill  = document.getElementById('mp-prog-fill');
-				  const playBtn   = document.getElementById('mp-play');
-				  const playIcon  = document.getElementById('mp-play-icon');
-				  const prevBtn   = document.getElementById('mp-prev');
-				  const nextBtn   = document.getElementById('mp-next');
-				  const volSlider = document.getElementById('mp-vol');
-				  const listBtn   = document.getElementById('mp-list-btn');
-				  const playlist  = document.getElementById('mp-playlist');
-				
-				  // SVG path data for play and pause icons
-				  const PLAY_PATH  = 'M8 5v14l11-7z';
-				  const PAUSE_PATH = 'M6 19h4V5H6v14zm8-14v14h4V5h-4z';
-				
-				  let current = 0;
-				  let isPlaying = false;
-		
-				  // Build playlist panel
-				  function buildPlaylist() {
-				    playlist.innerHTML = '';
-				    tracks.forEach((t, i) => {
-				      const div = document.createElement('div');
-				      div.className = 'mp-playlist-item' + (i === current ? ' active' : '');
-				      div.dataset.index = i;
-				      div.innerHTML = `
-				        <span class="mp-item-num ${i === current ? 'playing' : ''}">${i === current ? '&#9654;' : i + 1}</span>
-				        <span class="mp-item-name">${t.title}</span>
-				      `;
-				      div.addEventListener('click', () => { loadTrack(i); play(); });
-				      playlist.appendChild(div);
-				    });
-				  }
-				
-				  function fmtTime(s) {
-				    if (isNaN(s) || s === Infinity) return '0:00';
-				    const m = Math.floor(s / 60);
-				    const sec = Math.floor(s % 60);
-				    return m + ':' + (sec < 10 ? '0' : '') + sec;
-				  }
-				
-				  function loadTrack(idx) {
-				    current = idx;
-				    const t = tracks[idx];
-				    audio.src = t.src;
-				    audio.load();
-				    title.textContent  = t.title;
-				    artist.textContent = t.artist;
-				    progFill.style.width = '0%';
-				    curEl.textContent = '0:00';
-				    durEl.textContent = '0:00';
-				    buildPlaylist();
-				  }
-				
-				  function play() {
-				    audio.play();
-				    isPlaying = true;
-				    playIcon.querySelector('path') && (playIcon.querySelector('path').setAttribute('d', PAUSE_PATH));
-				    playIcon.innerHTML = `<path d="${PAUSE_PATH}"/>`;
-				  }
-				
-				  function pause() {
-				    audio.pause();
-				    isPlaying = false;
-				    playIcon.innerHTML = `<path d="${PLAY_PATH}"/>`;
-				  }
-				
-				  function togglePlay() {
-				    if (isPlaying) { pause(); } else { play(); }
-				  }
-				
-				  function nextTrack() {
-				    loadTrack((current + 1) % tracks.length);
-				    if (isPlaying) play();
-				  }
-				
-				  function prevTrack() {
-				    if (audio.currentTime > 3) {
-				      audio.currentTime = 0;
-				    } else {
-				      loadTrack((current - 1 + tracks.length) % tracks.length);
-				      if (isPlaying) play();
-				    }
-				  }
-				
-				  // Events
-				  playBtn.addEventListener('click', togglePlay);
-				  nextBtn.addEventListener('click', nextTrack);
-				  prevBtn.addEventListener('click', prevTrack);
-				
-				  audio.addEventListener('timeupdate', () => {
-				    const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
-				    progFill.style.width = pct + '%';
-				    curEl.textContent = fmtTime(audio.currentTime);
-				    durEl.textContent = fmtTime(audio.duration);
-				  });
-				
-				  audio.addEventListener('ended', nextTrack);
-				
-				  progBar.addEventListener('click', (e) => {
-				    const rect = progBar.getBoundingClientRect();
-				    const ratio = (e.clientX - rect.left) / rect.width;
-				    audio.currentTime = ratio * audio.duration;
-				  });
-				
-				  volSlider.addEventListener('input', () => {
-				    audio.volume = volSlider.value;
-				  });
-				
-				  listBtn.addEventListener('click', () => {
-				    playlist.classList.toggle('open');
-				  });
-				
-				  // Close playlist if clicking outside
-				  document.addEventListener('click', (e) => {
-				    if (!playlist.contains(e.target) && e.target !== listBtn) {
-				      playlist.classList.remove('open');
-				    }
-				  });
-				
-				  // Init
-				  audio.volume = 0.8;
-				  loadTrack(0);
-				})();
-				</script>
-			</div>
+					<div id="mp-playlist"></div>
+			
+					<!-- Hidden audio element -->
+					<audio id="mp-audio"></audio>
+			
+					<script>
+					(function () {
+			
+					  // ══════════════════════════════════════════════════
+					  // YOUR TRACKS — Edit this list!
+					  //
+					  // title:   Song name shown in the player
+					  // artist:  Artist name shown in the player
+					  // src:     Path to your .mp3 file
+					  //          Example: "audio/my-song.mp3"  (if stored in /audio/ folder)
+					  //          or a full URL to an externally hosted file
+					  // ══════════════════════════════════════════════════
+					  const tracks = [
+					    { title: "Die4you (Extended)",   artist: "808toofly", src: "audio/Die4you_Extended.mp3"   },
+					    { title: "I Cant Help It Electric Relaxation (Mashup)",   artist: "Michael Jackson, A Tribe Called Quest", src: "audio/Electric_Relaxation_I_Cant_Help_It_Mashup.mp3"   },
+					    { title: "Olson (Wrm Remix)", artist: "Board of Canada", src: "audio/Frozen_Indigo.mp3" },
+						{ title: "Peace and Love", artist: "Tall Black Guy", src: "audio/Peace_and_Love.mp3" },
+						{ title: "Set Me Free", artist: "remdolla", src: "audio/Set_Me_Free.mp3" },
+						{ title: "Sunflower", artist: "DKJ Beats", src: "audio/Sunflower.mp3" },
+						{ title: "Try Again", artist: "remdolla", src: "audio/Try_Again.mp3" },
+						{ title: "Tunnels", artist: "Lalah Hathaway", src: "audio/Tunnels.mp3" },
+						{ title: "You Know Whats Golden (Mashup)", artist: "Jill Scott, Donnel Jones", src: "audio/You_Know_Whats_Golden.mp3" },
+					    // Add more tracks here...
+					  ];
+					  // ══════════════════════════════════════════════════
+					
+					  const audio     = document.getElementById('mp-audio');
+					  const title     = document.getElementById('mp-title');
+					  const artist    = document.getElementById('mp-artist');
+					  const curEl     = document.getElementById('mp-cur');
+					  const durEl     = document.getElementById('mp-dur');
+					  const progBar   = document.getElementById('mp-prog-bar');
+					  const progFill  = document.getElementById('mp-prog-fill');
+					  const playBtn   = document.getElementById('mp-play');
+					  const playIcon  = document.getElementById('mp-play-icon');
+					  const prevBtn   = document.getElementById('mp-prev');
+					  const nextBtn   = document.getElementById('mp-next');
+					  const volSlider = document.getElementById('mp-vol');
+					  const listBtn   = document.getElementById('mp-list-btn');
+					  const playlist  = document.getElementById('mp-playlist');
+					
+					  // SVG path data for play and pause icons
+					  const PLAY_PATH  = 'M8 5v14l11-7z';
+					  const PAUSE_PATH = 'M6 19h4V5H6v14zm8-14v14h4V5h-4z';
+					
+					  let current = 0;
+					  let isPlaying = false;
+			
+					  // Build playlist panel
+					  function buildPlaylist() {
+					    playlist.innerHTML = '';
+					    tracks.forEach((t, i) => {
+					      const div = document.createElement('div');
+					      div.className = 'mp-playlist-item' + (i === current ? ' active' : '');
+					      div.dataset.index = i;
+					      div.innerHTML = `
+					        <span class="mp-item-num ${i === current ? 'playing' : ''}">${i === current ? '&#9654;' : i + 1}</span>
+					        <span class="mp-item-name">${t.title}</span>
+					      `;
+					      div.addEventListener('click', () => { loadTrack(i); play(); });
+					      playlist.appendChild(div);
+					    });
+					  }
+					
+					  function fmtTime(s) {
+					    if (isNaN(s) || s === Infinity) return '0:00';
+					    const m = Math.floor(s / 60);
+					    const sec = Math.floor(s % 60);
+					    return m + ':' + (sec < 10 ? '0' : '') + sec;
+					  }
+					
+					  function loadTrack(idx) {
+					    current = idx;
+					    const t = tracks[idx];
+					    audio.src = t.src;
+					    audio.load();
+					    title.textContent  = t.title;
+					    artist.textContent = t.artist;
+					    progFill.style.width = '0%';
+					    curEl.textContent = '0:00';
+					    durEl.textContent = '0:00';
+					    buildPlaylist();
+					  }
+					
+					  function play() {
+					    audio.play();
+					    isPlaying = true;
+					    playIcon.querySelector('path') && (playIcon.querySelector('path').setAttribute('d', PAUSE_PATH));
+					    playIcon.innerHTML = `<path d="${PAUSE_PATH}"/>`;
+					  }
+					
+					  function pause() {
+					    audio.pause();
+					    isPlaying = false;
+					    playIcon.innerHTML = `<path d="${PLAY_PATH}"/>`;
+					  }
+					
+					  function togglePlay() {
+					    if (isPlaying) { pause(); } else { play(); }
+					  }
+					
+					  function nextTrack() {
+					    loadTrack((current + 1) % tracks.length);
+					    if (isPlaying) play();
+					  }
+					
+					  function prevTrack() {
+					    if (audio.currentTime > 3) {
+					      audio.currentTime = 0;
+					    } else {
+					      loadTrack((current - 1 + tracks.length) % tracks.length);
+					      if (isPlaying) play();
+					    }
+					  }
+					
+					  // Events
+					  playBtn.addEventListener('click', togglePlay);
+					  nextBtn.addEventListener('click', nextTrack);
+					  prevBtn.addEventListener('click', prevTrack);
+					
+					  audio.addEventListener('timeupdate', () => {
+					    const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+					    progFill.style.width = pct + '%';
+					    curEl.textContent = fmtTime(audio.currentTime);
+					    durEl.textContent = fmtTime(audio.duration);
+					  });
+					
+					  audio.addEventListener('ended', nextTrack);
+					
+					  progBar.addEventListener('click', (e) => {
+					    const rect = progBar.getBoundingClientRect();
+					    const ratio = (e.clientX - rect.left) / rect.width;
+					    audio.currentTime = ratio * audio.duration;
+					  });
+					
+					  volSlider.addEventListener('input', () => {
+					    audio.volume = volSlider.value;
+					  });
+					
+					  listBtn.addEventListener('click', () => {
+					    playlist.classList.toggle('open');
+					  });
+					
+					  // Close playlist if clicking outside
+					  document.addEventListener('click', (e) => {
+					    if (!playlist.contains(e.target) && e.target !== listBtn) {
+					      playlist.classList.remove('open');
+					    }
+					  });
+					
+					  // Init
+					  audio.volume = 0.8;
+					  loadTrack(0);
+					})();
+					</script>
+				</div>
 
 			<!--	This is the background image of the site.
 				All configuration of the background is done with CSS.
