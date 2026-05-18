@@ -401,7 +401,7 @@
 
 })(jQuery);
 
-    const audio = document.getElementById('myAudio');
+    /*const audio = document.getElementById('myAudio');
     const playPauseBtn = document.getElementById('playPauseBtn');
     const progressBar = document.getElementById('progressBar');
     const progressBarContainer = document.getElementById('progressBarContainer');
@@ -444,3 +444,4 @@
         const remainingSeconds = Math.floor(seconds % 60);
         return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
     }
+	*/
