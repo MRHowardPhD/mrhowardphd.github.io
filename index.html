@@ -838,7 +838,9 @@
 					
 					  // Init
 					  audio.volume = 0.8;
-					  loadTrack(0);
+					  window.addEventListener('load', function() {
+						  loadTrack(0);
+					  });
 					})();
 					</script>
 				</div>
